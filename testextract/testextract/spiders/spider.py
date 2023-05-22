@@ -4,7 +4,7 @@ import scrapy
 class SpiderSpider(scrapy.Spider):
     name = "spider"
     allowed_domains = ["pds.docs.portworx.com"]
-    start_urls = ["https://pds.docs.portworx.com/concepts/overview"]
+    start_urls = ["https://pds.docs.portworx.com/concepts"]
 
     main_page=set('/concepts/')
 
