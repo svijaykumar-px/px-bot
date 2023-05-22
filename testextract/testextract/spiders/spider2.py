@@ -4,11 +4,11 @@ import re
 class SpiderSpider(scrapy.Spider):
     name = "spider2"
     allowed_domains = ["docs.portworx.com"]
-    start_urls = ['https://pds.docs.portworx.com/concepts/architecture/']
+    start_urls=['https://backup.docs.portworx.com']
+    # start_urls = ['https://central.docs.portworx.com']
     # start_urls = ['https://baas.docs.portworx.com']
     # start_urls = ["https://pds.docs.portworx.com"]
 
-    # main_page=set('/concepts/')
     main_page=set()
     not_open=['/reference/config-parameters/']
 
@@ -22,12 +22,11 @@ class SpiderSpider(scrapy.Spider):
     def parse(self, response):
 
         links=response.xpath("*//a[@class='mdl-navigation__link']/@href").extract()
-        print(links)
         current_h_tag = None
         p_tags = []
-        row_data = ''
     
-        for tag in response.css('h1, h2, h3, h4, h5, h6, p, li,tbody, img'):
+        for tag in response.css('h1, h2, h3, h4, h5, h6, p, li:not(.footer-links) ,tbody, img:not(.footer-social)'):
+            print(tag)
             if tag.root.tag in ['p','li']:
                 p_tags.append(SpiderSpider.remove_html_tags(tag.get()))
             elif tag.root.tag == 'img':
@@ -54,10 +53,9 @@ class SpiderSpider(scrapy.Spider):
                 current_h_tag = tag
                 p_tags = []
 
-        # Yield the last set of data after the loop ends
         if current_h_tag is not None:
             heading = SpiderSpider.remove_html_tags(current_h_tag.get())
-            p_tags = SpiderSpider.remove_html_tags("".join(p_tags))
+            p_tags = SpiderSpider.remove_html_tags(" ".join(p_tags))
 
             if len(p_tags)!=0:
                          
@@ -68,13 +66,13 @@ class SpiderSpider(scrapy.Spider):
                 }
 
         
-        # for link in links:
-        #         if link not in self.main_page and link.find('config-parameters') == -1:
-        #             self.main_page.add(link)
-        #             base=self.start_urls[0]
-        #             url=base+link
-        #             print(url)
-        #             yield scrapy.Request(url,self.parse)
+        for link in links:
+                if link not in self.main_page and link.find('config-parameters') == -1:
+                    self.main_page.add(link)
+                    base=self.start_urls[0]
+                    url=base+link
+                    print(url)
+                    yield scrapy.Request(url,self.parse)
 
 
 
