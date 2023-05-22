@@ -65,6 +65,15 @@ ROBOTSTXT_OBEY = True
 #ITEM_PIPELINES = {
 #    "testextract.pipelines.TestextractPipeline": 300,
 #}
+# ITEM_PIPELINES = [
+#   'scrapyelasticsearch.ElasticSearchPipeline',
+# ]
+
+# ELASTICSEARCH_SERVER = 'localhost' 
+# ELASTICSEARCH_PORT = 9200 
+# ELASTICSEARCH_INDEX = 'meetups'
+# ELASTICSEARCH_TYPE = 'meetup'
+# ELASTICSEARCH_UNIQ_KEY = 'link'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

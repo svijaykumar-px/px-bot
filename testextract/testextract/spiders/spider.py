@@ -15,16 +15,28 @@ class SpiderSpider(scrapy.Spider):
         main_titles = response.xpath("//*[starts-with(name(), 'h')][following-sibling::p]/text()[not(self::h1)]").getall()
         main_paras = response.xpath("//*[starts-with(name(), 'h')]/following-sibling::p[1]/text()").getall()
         # sub_titles = response.xpath('//h3/text()').getall()
+        if len(main_titles)==0 and len(main_paras) !=0:
+            main_titles=[(response.xpath("//h1/text()").extract_first()).strip('\n')]
 
-        
+        print(main_titles)
+        print(main_paras)
 
-        #adds the url of the page and the headings in that page to an output file
-        data={
-            "url": response.request.url,
-            "headings":main_titles,
-            "descriptions":main_paras
-        }
-        yield data
+        # #adds the url of the page and the headings in that page to an output file
+        # data={
+        #     "url": response.request.url,
+        #     "headings":main_titles,
+        #     "descriptions":main_paras
+        # }
+        # yield data
+
+        #adds heading and description
+        # for i in range(len(main_titles)):
+        #     data={
+        #         "heading":main_titles[i],
+        #         "description":main_paras[i]
+        #     }
+        #     yield data
+
 
         # visit every left out link in the page
         for link in links:
